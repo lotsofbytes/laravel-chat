@@ -6,7 +6,7 @@ const props = defineProps({
 });
 
 const newMessage = ref('');
-const fileName = ref();
+const fileInput = ref();
 let file;
 
 const emit = defineEmits(['messagesent']);
@@ -24,7 +24,7 @@ function sendMessage(e) {
 
   newMessage.value = "";
   file = null;
-  fileName.value.value = null;
+  fileInput.value.value = null;
 }
 </script>
 
@@ -39,12 +39,15 @@ function sendMessage(e) {
     />
 
     <input
+      style="display:none"
       type="file"
-      ref="fileName"
+      ref="fileInput"
       class="form-control input-sm"
       accept="image/jpeg, image/png, image/gif"
       @change="fileUpload"
     />
+
+    <button class="btn btn-sm" @click="fileInput.click()">Pick</button>
 
     <button class="btn btn-primary btn-sm" @click="sendMessage">
         Send

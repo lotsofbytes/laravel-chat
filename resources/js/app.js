@@ -67,6 +67,10 @@ const app = {
         },
 
         addMessage(message) {
+            if (message.message.length === 0) {
+                return;
+            }
+
             this.messages.push(message);
 
             const config = {

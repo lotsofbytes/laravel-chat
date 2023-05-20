@@ -19049,7 +19049,7 @@ __webpack_require__.r(__webpack_exports__);
     __expose();
     var props = __props;
     var newMessage = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
-    var fileName = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)();
+    var fileInput = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)();
     var file;
     function fileUpload(e) {
       file = e.target.files[0];
@@ -19062,12 +19062,12 @@ __webpack_require__.r(__webpack_exports__);
       });
       newMessage.value = "";
       file = null;
-      fileName.value.value = null;
+      fileInput.value.value = null;
     }
     var __returned__ = {
       props: props,
       newMessage: newMessage,
-      fileName: fileName,
+      fileInput: fileInput,
       get file() {
         return file;
       },
@@ -19150,12 +19150,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     onKeyup: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)($setup.sendMessage, ["enter"])
   }, null, 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.newMessage]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    style: {
+      "display": "none"
+    },
     type: "file",
-    ref: "fileName",
+    ref: "fileInput",
     "class": "form-control input-sm",
     accept: "image/jpeg, image/png, image/gif",
     onChange: $setup.fileUpload
   }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-sm",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $setup.fileInput.click();
+    })
+  }, "Pick"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm",
     onClick: $setup.sendMessage
   }, " Send ")]);
@@ -19269,6 +19277,9 @@ var app = {
       });
     },
     addMessage: function addMessage(message) {
+      if (message.message.length === 0) {
+        return;
+      }
       this.messages.push(message);
       var config = {
         headers: {
