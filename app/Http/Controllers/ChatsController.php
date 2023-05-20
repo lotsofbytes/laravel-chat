@@ -43,13 +43,13 @@ class ChatsController extends Controller
      */
     public function sendMessage(Request $request)
     {
-        Log::info($request);
-
         $user = Auth::user();
 
         $message = $user->messages()->create([
             'message' => $request->message
         ]);
+
+        $request->file('file')->storeAs('buyer', $message->id);
 
         broadcast(new MessageSent($user, $message))->toOthers();
         // MessageSent::dispatch($user, $message)
