@@ -25,6 +25,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 require('pusher-js');
 
 import Echo from 'laravel-echo';
+import { info } from 'laravel-mix/src/Log';
 
 const laravelEcho = new Echo({
     broadcaster: 'pusher',
@@ -68,9 +69,24 @@ const app = {
         addMessage(message) {
             this.messages.push(message);
 
-            axios.post('/laravel-chat/messages', message).then(response => {
-                console.log(response.data);
-            });
+            const config = {
+                headers: {
+                  'content-type' : 'multipart/form-data'
+                }
+            };
+
+            let data = new FormData();
+
+            data.append('message', message.message);
+            data.append('file', message.file);
+
+            axios.post('/laravel-chat/messages', data, config)
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     },
 
