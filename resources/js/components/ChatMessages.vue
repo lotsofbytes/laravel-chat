@@ -16,7 +16,7 @@ defineProps({
           </strong>
         </div>
         <p>
-          {{ message.message }}
+          {{ message.message }} {{ message.file && message.file.name || '' }}
         </p>
       </div>
     </li>
