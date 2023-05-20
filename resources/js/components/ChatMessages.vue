@@ -1,4 +1,10 @@
-// resources/assets/js/components/ChatMessages.vue
+<script setup>
+import { ref } from "vue";
+
+defineProps({
+  messages: Array
+});
+</script>
 
 <template>
   <ul>
@@ -16,11 +22,3 @@
     </li>
   </ul>
 </template>
-
-<script>
-export default {
-  props: {
-    messages: Array
-  }
-};
-</script>
