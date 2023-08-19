@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    <a href="/chat">チャットへ</a>
                 </div>
             </div>
         </div>
