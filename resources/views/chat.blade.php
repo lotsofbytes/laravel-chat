@@ -10,7 +10,10 @@
             <chat-messages :messages="messages" :user="{{ auth()->user() }}"></chat-messages>
         </div>
         <div class="card-footer">
-            <chat-form v-on:messagesent="addMessage" :user="{{ auth()->user() }}"></chat-form>
+            <chat-form v-on:messagesent="addMessage" v-on:istyping="isTyping" :user="{{ auth()->user() }}"></chat-form>
+            <span v-show="typing" class="help-block" style="font-style: italic;">
+                @{{ typer }}さんがタイプしています…
+            </span>
         </div>
     </div>
 </div>

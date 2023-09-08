@@ -6,7 +6,7 @@ const props = defineProps({
 });
 
 const newMessage = ref('');
-const emit = defineEmits(['messagesent']);
+const emit = defineEmits(['messagesent', 'istyping']);
 
 function sendMessage(e) {
   if (newMessage.value === '') return;
@@ -18,6 +18,12 @@ function sendMessage(e) {
 
   newMessage.value = "";
 }
+
+function isTyping(e) {
+  emit("istyping", {
+    user: props.user
+  });
+}
 </script>
 
 <template>
@@ -27,6 +33,7 @@ function sendMessage(e) {
       class="form-control"
       placeholder="メッセージをタイプしてください..."
       v-model="newMessage"
+      @keydown = "isTyping"
       @keydown.enter="sendMessage"
     />
 
