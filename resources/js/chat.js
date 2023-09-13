@@ -16,11 +16,21 @@ import ChatForm from './components/ChatForm.vue';
 
 createApp({
     setup () {
-        const messages = ref([]);
+        const messages = ref([]),
+            members = ref([]);
 
         fetchMessages();
 
-        window.Echo.private('chat')
+        window.Echo.join('chat')
+            .here(users => {
+                members.value = users;
+            })
+            .joining(user => {
+                members.value.push(user);
+            })
+            .leaving(user => {
+                members.value.splice(members.value.indexOf(user), 1);
+            })
             .listen('MessageSent', (e) => {
                 messages.value.push({
                     message: e.message.message,
@@ -43,6 +53,7 @@ createApp({
         }
 
         return {
+            members,
             messages,
             fetchMessages,
             addMessage
