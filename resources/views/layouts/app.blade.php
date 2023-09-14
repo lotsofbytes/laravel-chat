@@ -77,5 +77,10 @@
             @yield('content')
         </main>
     </div>
+    @auth
+        <script>
+            window.userId = {{ auth()->user()->id }};
+        </script>
+    @endauth
 </body>
 </html>

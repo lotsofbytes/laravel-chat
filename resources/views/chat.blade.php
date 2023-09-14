@@ -13,6 +13,7 @@
             <chat-form v-on:messagesent="addMessage" :user="{{ auth()->user() }}"></chat-form>
         </div>
     </div>
+    <chat-toast :toast="toast"></chat-toast>
 </div>
 @endsection
 

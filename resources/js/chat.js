@@ -7,6 +7,7 @@
 import { createApp, ref } from 'vue';
 import ChatMessages from './components/ChatMessages.vue';
 import ChatForm from './components/ChatForm.vue';
+import ChatToast from './components/ChatToast.vue';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -17,6 +18,7 @@ import ChatForm from './components/ChatForm.vue';
 createApp({
     setup () {
         const messages = ref([]);
+        const toast = ref({});
 
         fetchMessages();
 
@@ -26,6 +28,11 @@ createApp({
                     message: e.message.message,
                     user: e.user
                 });
+            });
+
+        window.Echo.private('App.Models.User.' + window.userId)
+            .notification((notification) => {
+                toast.value = notification;
             });
 
         function fetchMessages() {
@@ -43,6 +50,7 @@ createApp({
         }
 
         return {
+            toast,
             messages,
             fetchMessages,
             addMessage
@@ -51,4 +59,5 @@ createApp({
 })
 .component('chat-messages', ChatMessages)
 .component('chat-form', ChatForm)
+.component('chat-toast', ChatToast)
 .mount('#app');
