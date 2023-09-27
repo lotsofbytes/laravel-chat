@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { debounce, throttle } from 'lodash';
+import { throttle } from 'lodash';
 
 const props = defineProps({
   user: Object
