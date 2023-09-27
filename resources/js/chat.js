@@ -62,14 +62,9 @@ createApp({
         let whisperTimer = false;
 
         function isTyping(e) {
-            if (whisperTimer === false) {
-                window.Echo.private('chat').whisper('typing', {
-                    typer: e.user.name
-                });
-                whisperTimer = setTimeout(() => {
-                    whisperTimer = false;
-                }, 300);
-            }
+            window.Echo.private('chat').whisper('typing', {
+                typer: e.user.name
+            });
         }
 
         return {

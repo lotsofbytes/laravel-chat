@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { debounce, throttle } from 'lodash';
 
 const props = defineProps({
   user: Object
@@ -19,11 +20,15 @@ function sendMessage(e) {
   newMessage.value = "";
 }
 
-function isTyping(e) {
-  emit("istyping", {
-    user: props.user
-  });
-}
+const isTyping = throttle(
+    () => {
+      console.log('send');
+      emit("istyping", {
+        user: props.user
+      });
+    },
+    300,
+  );
 </script>
 
 <template>
