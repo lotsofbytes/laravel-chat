@@ -59,8 +59,6 @@ createApp({
             });
         }
 
-        let whisperTimer = false;
-
         function isTyping(e) {
             window.Echo.private('chat').whisper('typing', {
                 typer: e.user.name
