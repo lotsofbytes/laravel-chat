@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSent;
 use App\Models\Message;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class ChatsController extends Controller
 {
@@ -48,9 +48,15 @@ class ChatsController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new MessageSent($user, $message))->toOthers();
-        // MessageSent::dispatch($user, $message)
+        // ask openai in the background
+        $cmd = sprintf(
+            'nohup php %s/artisan app:openai %d > /dev/null 2>&1 &',
+            base_path(),
+            $message->id
+        );
 
-        return ['status' => 'Message Sent!'];
+        exec($cmd);
+
+        return ['status' => 'Asking openai'];
     }
 }

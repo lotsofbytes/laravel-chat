@@ -20,12 +20,12 @@ createApp({
 
         fetchMessages();
 
-        window.Echo.private('chat')
-            .listen('MessageSent', (e) => {
+        window.Echo.private('App.Models.User.' + window.userId)
+            .notification((notification) => {
                 messages.value.push({
-                    message: e.message.message,
-                    user: e.user
-                });
+                    message: notification.message,
+                    user: notification.user
+                })
             });
 
         function fetchMessages() {
