@@ -1,4 +1,6 @@
 <script setup>
+import MarkdownIt from 'markdown-it';
+const markdown = new MarkdownIt();
 
 defineProps({
   messages: Array,
@@ -17,9 +19,19 @@ defineProps({
           <span v-else>{{ message.user.name }}さん</span>
         </strong>
       </div>
-      <p>
-        {{ message.message }}
-      </p>
+      <p v-if="message.user.id === user.id">{{ message.message }}</p>
+      <p v-else v-html="markdown.render(message.message)"></p>
     </li>
   </ul>
 </template>
+
+<style>
+ul {
+  list-style-type: square;
+}
+
+pre, code {
+  background-color:pink;
+  padding: 4px;
+}
+</style>
