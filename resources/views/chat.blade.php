@@ -13,8 +13,14 @@
             <chat-form v-on:messagesent="addMessage" :user="{{ auth()->user() }}"></chat-form>
         </div>
     </div>
-    <chat-toast :toast="toast"></chat-toast>
 </div>
+
+<confirm-modal
+  :visible="modalVisible"
+  v-on:confirmed="askPermission"
+  question="お知らせを受け取りますか？">
+</confirm-dialog>
+
 @endsection
 
 @push('scripts')

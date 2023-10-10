@@ -7,7 +7,7 @@
 import { createApp, ref } from 'vue';
 import ChatMessages from './components/ChatMessages.vue';
 import ChatForm from './components/ChatForm.vue';
-import ChatToast from './components/ChatToast.vue';
+import ConfirmModal from './components/ConfirmModal.vue';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -18,9 +18,14 @@ import ChatToast from './components/ChatToast.vue';
 createApp({
     setup () {
         const messages = ref([]);
-        const toast = ref({});
+        const modalVisible = ref(false);
 
         fetchMessages();
+
+        // 通知権限が既に決定されているかどうかを調べる
+        if (Notification.permission === 'default') {
+            modalVisible.value = true;
+        }
 
         window.Echo.private('chat')
             .listen('MessageSent', (e) => {
@@ -31,8 +36,20 @@ createApp({
             });
 
         window.Echo.private('App.Models.User.' + window.userId)
-            .notification((notification) => {
-                toast.value = notification;
+            .notification((n) => {
+                 // 通知権限が既に付与されているなら、通知を作成
+                if (Notification.permission === 'granted') {
+                    const notification = new Notification(
+                        'ご連絡',
+                        {
+                            icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/180px-Laravel.svg.png',
+                            body: n.message
+                        }
+                    );
+                    notification.onclick = () => {
+                        window.open('https://larajapan.com');
+                    }
+                }
             });
 
         function fetchMessages() {
@@ -49,15 +66,24 @@ createApp({
             });
         }
 
+        function askPermission() {
+            modalVisible.value = false;
+
+            Notification.requestPermission().then((permission) => {
+                console.log(permission);
+            });
+        }
+
         return {
-            toast,
             messages,
             fetchMessages,
-            addMessage
+            addMessage,
+            modalVisible,
+            askPermission
         }
     }
 })
 .component('chat-messages', ChatMessages)
 .component('chat-form', ChatForm)
-.component('chat-toast', ChatToast)
+.component('confirm-modal', ConfirmModal)
 .mount('#app');
